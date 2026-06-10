@@ -1,0 +1,60 @@
+.hero {
+  background-color: var(--secondary-background);
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 120px 80px;
+  }
+
+  &__left {
+    max-width: 520px;
+  }
+
+  &__heading {
+    font-size: 48px;
+    line-height: 48px;
+    letter-spacing: -2.14286px;
+    color: var(--background);
+    margin-bottom: 24px;
+  }
+
+  &__desc {
+    font-family: "Lexend Deca";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 25px;
+    color: var(--desc-color);
+    margin-bottom: 40px;
+  }
+
+  &__right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__img {
+    width: 520px;
+    max-width: 100%;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  .hero__container {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .hero__right {
+    display: none;
+  }
+
+  .hero__heading {
+    font-size: 44px;
+  }
+}

@@ -1,0 +1,21 @@
+.button {
+  margin: 0;
+  padding: 14px 39px;
+  cursor: pointer;
+  font-family: "Lexend Deca";
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 25px;
+  text-align: center;
+  color: var(--secondary-color);
+  text-decoration: none;
+  background-color: var(--main-color);
+  border: 3px solid transparent;
+  border-radius: 5px;
+}
+
+.button:hover {
+  border: 3px solid var(--main-color);
+  color: var(--main-color);
+  background: transparent;
+}

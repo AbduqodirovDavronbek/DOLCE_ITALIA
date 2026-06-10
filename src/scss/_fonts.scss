@@ -1,0 +1,42 @@
+/* Space Mono Regular - Latin */
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 400;
+  src:
+    url("/fonts/space-mono-v11-latin-regular.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("/fonts/space-mono-v11-latin-regular.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */ url("/fonts/space-mono-v11-latin-regular.woff")
+      format("woff"),
+    /* Modern Browsers */ url("/fonts/space-mono-v11-latin-regular.ttf")
+      format("truetype");
+  /* Safari, Android, iOS */
+}
+
+/* Space Mono Bold - Latin */
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 700;
+  src:
+    url("/fonts/space-mono-v11-latin-700.eot?#iefix")
+      format("embedded-opentype"),
+    url("/fonts/space-mono-v11-latin-700.woff2") format("woff2"),
+    url("/fonts/space-mono-v11-latin-700.woff") format("woff"),
+    url("/fonts/space-mono-v11-latin-700.ttf") format("truetype");
+}
+
+/* Lexend Deca Regular - Latin */
+@font-face {
+  font-family: "Lexend Deca";
+  font-style: normal;
+  font-weight: 400;
+  src:
+    url("/fonts/lexend-deca-v16-latin-regular.eot?#iefix")
+      format("embedded-opentype"),
+    url("/fonts/lexend-deca-v16-latin-regular.woff2") format("woff2"),
+    url("/fonts/lexend-deca-v16-latin-regular.woff") format("woff"),
+    url("/fonts/lexend-deca-v16-latin-regular.ttf") format("truetype");
+}

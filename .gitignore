@@ -1,0 +1,16 @@
+# Node dependencies (frontend)
+node_modules/
+
+# Backend dependencies (if you use Node/Python)
+backend/node_modules/
+backend/env/
+backend/__pycache__/
+
+# Secret environment files
+.env
+.env.local
+backend/.env
+
+# IDE / AI files
+.vscode/
+.github/copilot-instructions.md

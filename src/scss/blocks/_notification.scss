@@ -1,0 +1,141 @@
+.notification {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  max-width: 400px;
+  padding: 1.25rem 1.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  animation: notificationSlideIn 0.3s ease-out;
+  z-index: 9999;
+  border-left: 4px solid var(--background);
+
+  @media (max-width: 640px) {
+    top: 1rem;
+    right: 1rem;
+    left: 1rem;
+    max-width: none;
+  }
+
+  &__content {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    flex: 1;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  &__message {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--background);
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--background);
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--main-color);
+    }
+  }
+
+  // Success state
+  &--success {
+    border-left-color: var(--main-color);
+    background: rgba(112, 204, 112, 0.05);
+
+    .notification__icon {
+      background: var(--main-color);
+      color: white;
+    }
+
+    .notification__message {
+      color: var(--main-color);
+    }
+  }
+
+  // Error state
+  &--error {
+    border-left-color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.05);
+
+    .notification__icon {
+      background: #ff6b6b;
+      color: white;
+    }
+
+    .notification__message {
+      color: #ff6b6b;
+    }
+  }
+
+  // Warning state
+  &--warning {
+    border-left-color: #ffa94d;
+    background: rgba(255, 164, 77, 0.05);
+
+    .notification__icon {
+      background: #ffa94d;
+      color: white;
+    }
+
+    .notification__message {
+      color: #ff9800;
+    }
+  }
+
+  // Info state
+  &--info {
+    border-left-color: #4a9eff;
+    background: rgba(74, 158, 255, 0.05);
+
+    .notification__icon {
+      background: #4a9eff;
+      color: white;
+    }
+
+    .notification__message {
+      color: #4a9eff;
+    }
+  }
+}
+
+@keyframes notificationSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(400px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

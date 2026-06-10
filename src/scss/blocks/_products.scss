@@ -1,0 +1,240 @@
+.products {
+  padding: 40px 0 200px 0;
+  background-color: var(--secondary-background);
+  &__title {
+    text-align: center;
+    font-size: 48px;
+    line-height: 48px;
+    margin-bottom: 40px;
+    color: var(--background);
+  }
+
+  &__nav {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    list-style: none;
+    padding: 0;
+    margin-bottom: 80px;
+
+    li {
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 25px;
+      color: var(--desc-color);
+      padding-bottom: 6px;
+      transition: 0.2s;
+    }
+
+    li:hover {
+      color: var(--main-color);
+    }
+
+    .active {
+      color: var(--main-color);
+      border-bottom: 2px solid var(--main-color);
+    }
+  }
+
+  &__price-box {
+    margin-bottom: 20px;
+    font-size: 18px;
+    line-height: 25px;
+  }
+
+  .old-price {
+    text-decoration: line-through;
+    margin-right: 12px;
+    color: var(--muted-color);
+  }
+
+  .new-price {
+    font-weight: 700;
+    color: var(--main-color);
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  &__item {
+    margin: 0;
+    padding: 32px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--surface-strong);
+  }
+
+  &__item:nth-child(even) {
+    flex-direction: row-reverse;
+  }
+
+  &__left {
+    max-width: 445px;
+  }
+
+  &__heading {
+    margin: 0;
+    padding: 0;
+    font-size: 48px;
+    line-height: 48px;
+    color: var(--background);
+    margin-bottom: 24px;
+  }
+
+  &__desc {
+    margin: 0;
+    padding: 0;
+    font-family: "Lexend Deca";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 25px;
+    color: var(--desc-color);
+    margin-bottom: 40px;
+  }
+
+  &__img {
+    width: 100%;
+    max-width: 420px;
+    height: 420px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 32px;
+    background-color: var(--surface-medium);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    padding: 32px;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 24px;
+    background-color: #fff;
+  }
+
+  &__quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__quantity-btn {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--main-color);
+    background-color: transparent;
+    color: var(--main-color);
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  &__quantity-btn:hover {
+    background-color: var(--main-color);
+    color: var(--background);
+  }
+
+  &__quantity {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--main-color);
+    min-width: 30px;
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 1150px) {
+  .products {
+    padding: 40px 0 104px 0;
+    &__container {
+      max-width: 613px;
+    }
+
+    &__nav {
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+
+    &__item {
+      flex-direction: column-reverse;
+      gap: 40px;
+      padding: 24px 0;
+    }
+
+    &__item:nth-child(even) {
+      flex-direction: column-reverse;
+    }
+
+    &__left {
+      max-width: 573px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__img {
+      max-width: 100%;
+      width: 100%;
+      height: auto;
+      padding: 24px;
+    }
+
+    &__heading {
+      max-width: 457px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    &__desc {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+  }
+}
+
+@media only screen and (max-width: 592px) {
+  .products {
+    &__container {
+      max-width: 351px;
+    }
+
+    &__nav {
+      gap: 16px;
+      font-size: 14px;
+      margin-bottom: 40px;
+    }
+
+    &__left {
+      max-width: 311px;
+    }
+
+    &__heading {
+      max-width: 311px;
+      margin-bottom: 32px;
+      text-align: center;
+      font-size: 32px;
+      line-height: 32px;
+      text-align: center;
+    }
+
+    &__desc {
+      margin-bottom: 32px;
+      font-size: 15px;
+      line-height: 25px;
+    }
+  }
+}
