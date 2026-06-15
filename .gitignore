@@ -14,3 +14,7 @@ backend/.env
 # IDE / AI files
 .vscode/
 .github/copilot-instructions.md
+
+# Folders
+dist/
+md_files/

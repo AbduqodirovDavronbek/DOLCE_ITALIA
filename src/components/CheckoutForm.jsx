@@ -5,7 +5,8 @@ import { CartContext } from "../context/CartContext";
 
 const CheckoutForm = ({ onNotification }) => {
   const navigate = useNavigate();
-  const { cartItems, clearCart, getShippingCost, getTotalPrice } = useContext(CartContext);
+  const { cartItems, clearCart, getShippingCost, getTotalPrice } =
+    useContext(CartContext);
 
   const [phone, setPhone] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -89,12 +90,16 @@ const CheckoutForm = ({ onNotification }) => {
     () => (usePoints ? Math.min(availablePoints * 10000, cartSubtotal) : 0),
     [availablePoints, cartSubtotal, usePoints],
   );
-  const displayTotal = Math.max(0, cartSubtotal - pointsDiscount + shippingCost);
+  const displayTotal = Math.max(
+    0,
+    cartSubtotal - pointsDiscount + shippingCost,
+  );
 
   const parseErrorData = (data) => {
     if (!data) return null;
     if (typeof data === "string") return data;
-    if (Array.isArray(data)) return data.map((item) => JSON.stringify(item)).join("; ");
+    if (Array.isArray(data))
+      return data.map((item) => JSON.stringify(item)).join("; ");
     return typeof data === "object" ? JSON.stringify(data) : String(data);
   };
 
@@ -103,8 +108,13 @@ const CheckoutForm = ({ onNotification }) => {
 
     if (!phone.trim()) nextErrors.phone = "Phone number is required.";
     if (!firstName.trim()) nextErrors.firstName = "First name is required.";
-    if (!shippingAddress.trim()) nextErrors.shippingAddress = "Shipping address is required.";
-    if (!locationUrl || locationLatitude === null || locationLongitude === null) {
+    if (!shippingAddress.trim())
+      nextErrors.shippingAddress = "Shipping address is required.";
+    if (
+      !locationUrl ||
+      locationLatitude === null ||
+      locationLongitude === null
+    ) {
       nextErrors.locationUrl = "Please select a location on the map.";
     }
 
@@ -113,9 +123,12 @@ const CheckoutForm = ({ onNotification }) => {
 
   const fetchUserPoints = async (phoneNumber) => {
     try {
-      const response = await axiosInstance.post("/api/orders/users/lookup-points", {
-        phone: phoneNumber,
-      });
+      const response = await axiosInstance.post(
+        "/api/orders/users/lookup-points",
+        {
+          phone: phoneNumber,
+        },
+      );
       if (response.data && typeof response.data.loyalty_points === "number") {
         return response.data.loyalty_points;
       }
@@ -146,7 +159,8 @@ const CheckoutForm = ({ onNotification }) => {
 
   const initializeMap = () => {
     const center =
-      initialCoordsRef.current?.[0] != null && initialCoordsRef.current?.[1] != null
+      initialCoordsRef.current?.[0] != null &&
+      initialCoordsRef.current?.[1] != null
         ? initialCoordsRef.current
         : [41.3111, 69.2797];
 
@@ -183,7 +197,11 @@ const CheckoutForm = ({ onNotification }) => {
   };
 
   useEffect(() => {
-    if (typeof window === "undefined" || !isFormLoaded || mapRef.current) return;
+    if (typeof window === "undefined" || !isFormLoaded || mapRef.current)
+      return;
+
+    let handleScriptLoad;
+    let targetScript;
 
     const loadMap = () => {
       if (window.ymaps && window.ymaps.ready) {
@@ -193,8 +211,10 @@ const CheckoutForm = ({ onNotification }) => {
 
       const existingScript = document.getElementById("yandex-maps-script");
       if (existingScript) {
-        existingScript.addEventListener("load", () => window.ymaps.ready(initializeMap));
-        return () => existingScript.removeEventListener("load", initializeMap);
+        targetScript = existingScript;
+        handleScriptLoad = () => window.ymaps.ready(initializeMap);
+        existingScript.addEventListener("load", handleScriptLoad);
+        return;
       }
 
       const script = document.createElement("script");
@@ -206,13 +226,22 @@ const CheckoutForm = ({ onNotification }) => {
     };
 
     loadMap();
+
+    return () => {
+      if (targetScript && handleScriptLoad) {
+        targetScript.removeEventListener("load", handleScriptLoad);
+      }
+    };
   }, [isFormLoaded]);
 
   const handleLocationClick = () => {
     if (isDetectingLocation || Boolean(locationUrl)) return;
 
     if (!navigator.geolocation) {
-      onNotification?.("Geolocation is not supported by this browser.", "warning");
+      onNotification?.(
+        "Geolocation is not supported by this browser.",
+        "warning",
+      );
       return;
     }
 
@@ -220,15 +249,20 @@ const CheckoutForm = ({ onNotification }) => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        if (mapRef.current) mapRef.current.setCenter([latitude, longitude], 17, {
-          checkZoomRange: true,
-        });
-        if (placemarkRef.current) placemarkRef.current.geometry.setCoordinates([latitude, longitude]);
+        if (mapRef.current)
+          mapRef.current.setCenter([latitude, longitude], 17, {
+            checkZoomRange: true,
+          });
+        if (placemarkRef.current)
+          placemarkRef.current.geometry.setCoordinates([latitude, longitude]);
         setLocation(latitude, longitude);
         setIsDetectingLocation(false);
       },
       () => {
-        onNotification?.("Could not get location. Please allow location access.", "error");
+        onNotification?.(
+          "Could not get location. Please allow location access.",
+          "error",
+        );
         setIsDetectingLocation(false);
       },
     );
@@ -247,7 +281,9 @@ const CheckoutForm = ({ onNotification }) => {
       await axiosInstance.post("/api/auth/send-otp", { phone: phone.trim() });
       setVerificationSent(true);
     } catch (error) {
-      setVerificationError("Failed to send verification code. Please try again.");
+      setVerificationError(
+        "Failed to send verification code. Please try again.",
+      );
     } finally {
       setIsSendingOtp(false);
     }
@@ -290,7 +326,10 @@ const CheckoutForm = ({ onNotification }) => {
     location_longitude: locationLongitude,
     payment_method: paymentMethod,
     use_loyalty_points: usePoints,
-    items: cartItems.map((item) => ({ product_id: item.id, quantity: item.quantity })),
+    items: cartItems.map((item) => ({
+      product_id: item.id,
+      quantity: item.quantity,
+    })),
   });
 
   const resetForm = () => {
@@ -325,20 +364,29 @@ const CheckoutForm = ({ onNotification }) => {
 
     if (Object.keys(nextErrors).length > 0) {
       const firstField = Object.keys(nextErrors)[0];
-      const element = document.querySelector(`.checkout__input[name="${firstField}"]`);
+      const element = document.querySelector(
+        `.checkout__input[name="${firstField}"]`,
+      );
       if (element) element.focus();
       setIsSubmitting(false);
       return;
     }
 
     try {
-      const response = await axiosInstance.post("/api/orders/checkout", buildOrderPayload());
+      const response = await axiosInstance.post(
+        "/api/orders/checkout",
+        buildOrderPayload(),
+      );
       if (response.data?.payment_url) {
         window.location.href = response.data.payment_url;
         return;
       }
 
-      const orderData = { ...buildOrderPayload(), items: cartItems, total_amount_uzs: displayTotal };
+      const orderData = {
+        ...buildOrderPayload(),
+        items: cartItems,
+        total_amount_uzs: displayTotal,
+      };
       onNotification?.("Order placed successfully!", "success");
       clearCart();
       resetForm();
@@ -374,7 +422,9 @@ const CheckoutForm = ({ onNotification }) => {
             <ul className="checkout__preview-list">
               {cartItems.map((item) => (
                 <li key={item.id} className="checkout__preview-item">
-                  <span className="checkout__preview-item-name">{item.title}</span>
+                  <span className="checkout__preview-item-name">
+                    {item.title}
+                  </span>
                   <span className="checkout__preview-item-details">
                     {item.quantity} × {Number(item.price).toLocaleString()} UZS
                   </span>
@@ -385,7 +435,11 @@ const CheckoutForm = ({ onNotification }) => {
         </div>
 
         <div className="checkout__content">
-          <form className="checkout__form" onSubmit={handleSubmit}>
+          <form
+            id="checkout-form"
+            className="checkout__form"
+            onSubmit={handleSubmit}
+          >
             <div className="checkout__section">
               <h2 className="checkout__section-title">Delivery Details</h2>
 
@@ -413,7 +467,11 @@ const CheckoutForm = ({ onNotification }) => {
                       onClick={sendVerificationCode}
                       disabled={isSendingOtp || verificationSent}
                     >
-                      {isSendingOtp ? "Sending..." : verificationSent ? "Sent" : "Send Verification Code"}
+                      {isSendingOtp
+                        ? "Sending..."
+                        : verificationSent
+                          ? "Sent"
+                          : "Send Verification Code"}
                     </button>
                   </div>
 
@@ -447,14 +505,18 @@ const CheckoutForm = ({ onNotification }) => {
                     </div>
                   )}
 
-                  {verificationError && <p className="checkout__field-error">{verificationError}</p>}
+                  {verificationError && (
+                    <p className="checkout__field-error">{verificationError}</p>
+                  )}
                   {isVerified && (
                     <p className="checkout__verification-success">
                       Phone verified successfully. You can now place the order.
                     </p>
                   )}
                 </div>
-                {errors.phone && <p className="checkout__field-error">{errors.phone}</p>}
+                {errors.phone && (
+                  <p className="checkout__field-error">{errors.phone}</p>
+                )}
               </label>
 
               <label className="checkout__label">
@@ -471,7 +533,9 @@ const CheckoutForm = ({ onNotification }) => {
                   placeholder="Ali"
                   required
                 />
-                {errors.firstName && <p className="checkout__field-error">{errors.firstName}</p>}
+                {errors.firstName && (
+                  <p className="checkout__field-error">{errors.firstName}</p>
+                )}
               </label>
 
               <label className="checkout__label">
@@ -483,13 +547,18 @@ const CheckoutForm = ({ onNotification }) => {
                   value={shippingAddress}
                   onChange={(event) => {
                     setShippingAddress(event.target.value);
-                    setErrors((prev) => ({ ...prev, shippingAddress: undefined }));
+                    setErrors((prev) => ({
+                      ...prev,
+                      shippingAddress: undefined,
+                    }));
                   }}
                   placeholder="Street, building, apartment"
                   required
                 />
                 {errors.shippingAddress && (
-                  <p className="checkout__field-error">{errors.shippingAddress}</p>
+                  <p className="checkout__field-error">
+                    {errors.shippingAddress}
+                  </p>
                 )}
               </label>
 
@@ -515,11 +584,16 @@ const CheckoutForm = ({ onNotification }) => {
                   {locationUrl
                     ? "Location selected"
                     : isDetectingLocation
-                    ? "Detecting location…"
-                    : "📍 Detect My Current Location"}
+                      ? "Detecting location…"
+                      : "📍 Detect My Current Location"}
                 </button>
-                {errors.locationUrl && <p className="checkout__field-error">{errors.locationUrl}</p>}
-                <p className="checkout__location-status" style={{ marginTop: "8px" }}>
+                {errors.locationUrl && (
+                  <p className="checkout__field-error">{errors.locationUrl}</p>
+                )}
+                <p
+                  className="checkout__location-status"
+                  style={{ marginTop: "8px" }}
+                >
                   {locationLatitude !== null && locationLongitude !== null
                     ? `Selected coordinates: ${locationLatitude.toFixed(6)}, ${locationLongitude.toFixed(6)}`
                     : "Click on the map or use the button to choose your location."}
@@ -563,64 +637,73 @@ const CheckoutForm = ({ onNotification }) => {
                 </label>
               )}
             </div>
+          </form>
 
-            <aside className="checkout__summary">
-              <div className="checkout__summary-box">
-                <div className="checkout__summary-section">
-                  <h3 className="checkout__summary-section-title">Totals</h3>
-                  <div className="checkout__summary-row">
-                    <span>Subtotal:</span>
-                    <span>{cartSubtotal.toLocaleString()} UZS</span>
-                  </div>
-                  {usePoints && pointsDiscount > 0 && (
-                    <div className="checkout__summary-row checkout__summary-discount">
-                      <span>Loyalty Points discount:</span>
-                      <span>−{pointsDiscount.toLocaleString()} UZS</span>
-                    </div>
-                  )}
-                  <div className="checkout__summary-row">
-                    <span>Shipping:</span>
-                    <span>{shippingCost.toLocaleString()} UZS</span>
-                  </div>
-                  <div className="checkout__summary-divider" />
-                  <div className="checkout__summary-row checkout__summary-total">
-                    <span>Total:</span>
-                    <span>{displayTotal.toLocaleString()} UZS</span>
-                  </div>
+          <aside className="checkout__summary">
+            <div className="checkout__summary-box">
+              <div className="checkout__summary-section">
+                <h3 className="checkout__summary-section-title">Totals</h3>
+                <div className="checkout__summary-row">
+                  <span>Subtotal:</span>
+                  <span>{cartSubtotal.toLocaleString()} UZS</span>
                 </div>
+                {usePoints && pointsDiscount > 0 && (
+                  <div className="checkout__summary-row checkout__summary-discount">
+                    <span>Loyalty Points discount:</span>
+                    <span>−{pointsDiscount.toLocaleString()} UZS</span>
+                  </div>
+                )}
+                <div className="checkout__summary-row">
+                  <span>Shipping:</span>
+                  <span>{shippingCost.toLocaleString()} UZS</span>
+                </div>
+                <div className="checkout__summary-divider" />
+                <div className="checkout__summary-row checkout__summary-total">
+                  <span>Total:</span>
+                  <span>{displayTotal.toLocaleString()} UZS</span>
+                </div>
+              </div>
 
-                <div className="checkout__summary-section">
-                  <h3 className="checkout__summary-section-title">Payment</h3>
-                  <div className="checkout__summary-row">
-                    <span>Method:</span>
-                    <span className="checkout__summary-value">
-                      {paymentMethod === "cash"
-                        ? "Cash on Delivery"
-                        : paymentMethod === "click"
+              <div className="checkout__summary-section">
+                <h3 className="checkout__summary-section-title">Payment</h3>
+                <div className="checkout__summary-row">
+                  <span>Method:</span>
+                  <span className="checkout__summary-value">
+                    {paymentMethod === "cash"
+                      ? "Cash on Delivery"
+                      : paymentMethod === "click"
                         ? "Click"
                         : paymentMethod}
+                  </span>
+                </div>
+                {availablePoints > 0 && isVerified && (
+                  <div className="checkout__summary-row">
+                    <span>Loyalty Points available:</span>
+                    <span className="checkout__summary-value">
+                      {availablePoints}
                     </span>
                   </div>
-                  {availablePoints > 0 && isVerified && (
-                    <div className="checkout__summary-row">
-                      <span>Loyalty Points available:</span>
-                      <span className="checkout__summary-value">{availablePoints}</span>
-                    </div>
-                  )}
-                </div>
-
-                <button className="button" type="submit" disabled={isSubmitting || !isVerified}>
-                  {isSubmitting ? "Placing order..." : "Place Order"}
-                </button>
-                {!isVerified && (
-                  <p className="checkout__warning-text">
-                    Please verify your phone to enable placing the order.
-                  </p>
                 )}
-                {checkoutError && <p className="checkout__error">{checkoutError}</p>}
               </div>
-            </aside>
-          </form>
+
+              <button
+                className="button"
+                type="submit"
+                form="checkout-form"
+                disabled={isSubmitting || !isVerified}
+              >
+                {isSubmitting ? "Placing order..." : "Place Order"}
+              </button>
+              {!isVerified && (
+                <p className="checkout__warning-text">
+                  Please verify your phone to enable placing the order.
+                </p>
+              )}
+              {checkoutError && (
+                <p className="checkout__error">{checkoutError}</p>
+              )}
+            </div>
+          </aside>
         </div>
       </div>
     </section>

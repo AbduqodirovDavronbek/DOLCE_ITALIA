@@ -1,40 +1,7 @@
 from datetime import datetime
 from enum import Enum
 from typing import List, Optional
-from pydantic import BaseModel, ConfigDict, EmailStr
-
-
-class UserBase(BaseModel):
-    email: EmailStr
-    first_name: str
-    last_name: str
-    phone: Optional[str] = None
-
-
-class UserCreate(UserBase):
-    clerk_id: str
-
-
-class UserUpdate(BaseModel):
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    phone: Optional[str] = None
-    address: Optional[str] = None
-    city: Optional[str] = None
-    postal_code: Optional[str] = None
-    country: Optional[str] = None
-
-
-class UserResponse(UserBase):
-    id: int
-    clerk_id: Optional[str] = None
-    address: Optional[str]
-    city: Optional[str]
-    postal_code: Optional[str]
-    country: Optional[str]
-    created_at: datetime
-    model_config = ConfigDict(from_attributes=True)
-
+from pydantic import BaseModel, ConfigDict
 
 class ProductBase(BaseModel):
     id: str
@@ -65,27 +32,6 @@ class ProductResponse(ProductBase):
     image_url: Optional[str]
     in_stock: int
     created_at: datetime
-    model_config = ConfigDict(from_attributes=True)
-
-
-class CartItemBase(BaseModel):
-    product_id: str
-    quantity: int = 1
-
-
-class CartItemCreate(CartItemBase):
-    pass
-
-
-class CartItemUpdate(BaseModel):
-    quantity: int
-
-
-class CartItemResponse(CartItemBase):
-    id: int
-    user_id: int
-    added_at: datetime
-    product: ProductResponse
     model_config = ConfigDict(from_attributes=True)
 
 
