@@ -2,18 +2,19 @@ import { useContext, useEffect, useState } from "react";
 import productImg from "../assets/images/circle1.png";
 import { CartContext } from "../context/CartContext";
 
-const BASE_API_URL = import.meta.env.VITE_API_URL || "https://dolce-italia-backend.onrender.com";
+const BASE_API_URL = import.meta.env.VITE_API_URL || "https://dolce-italia-backend.onrender.com"; 
 
 const getProductImageUrl = (imageUrl) => {
   if (!imageUrl) return productImg;
-  if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
     return imageUrl;
   }
-  return `${BASE_API_URL}${imageUrl.startsWith("/") ? "" : "/"}${imageUrl}`;
+
+  return `${BASE_API_URL}${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`; 
 };
 
 const Products = () => {
-  const [category, setCategory] = useState("discount");
+  const [category, setCategory] = useState('discount');
   const [products, setProducts] = useState({
     discount: [],
     icecream: [],
@@ -23,17 +24,16 @@ const Products = () => {
   });
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
-  const { addToCart, cartItems, updateQuantity, removeFromCart } =
-    useContext(CartContext);
+  const { addToCart, cartItems, updateQuantity, removeFromCart } = useContext(CartContext);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${BASE_API_URL}/api/products`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch products");
-        }
 
+        const response = await fetch(`${BASE_API_URL}/api/products`); 
+        if (!response.ok) {
+          throw new Error('Failed to fetch products');
+        }
         const data = await response.json();
         const grouped = {
           discount: [],
@@ -42,27 +42,22 @@ const Products = () => {
           beverage: [],
           dessert: [],
         };
-
         data.forEach((product) => {
-          const categoryKey = product.category || "icecream";
+          const categoryKey = product.category || 'icecream';
           if (grouped[categoryKey]) {
             grouped[categoryKey].push(product);
           } else {
             grouped[categoryKey] = [product];
           }
         });
-
         setProducts(grouped);
       } catch (error) {
-        console.error("Error fetching products:", error);
-        setLoadError(
-          "Unable to load products right now. Please make sure the backend is running and try again.",
-        );
+        console.error('Error fetching products:', error);
+        setLoadError('Unable to load products right now. Please make sure the backend is running and try again.');
       } finally {
         setLoading(false);
       }
     };
-
     fetchProducts();
   }, []);
 
