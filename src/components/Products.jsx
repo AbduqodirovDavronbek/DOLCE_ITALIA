@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import productImg from "../assets/images/circle1.png";
 import { CartContext } from "../context/CartContext";
 
-const BASE_API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const BASE_API_URL = import.meta.env.VITE_API_URL || "https://dolce-italia-backend.onrender.com";
 
 const getProductImageUrl = (imageUrl) => {
   if (!imageUrl) return productImg;
