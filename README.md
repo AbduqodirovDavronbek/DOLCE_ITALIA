@@ -1,4 +1,5 @@
 Deployed domain: https://dolce-italia.vercel.app/
+Backend domain: https://dolce-italia-backend.onrender.com/docs
 
 Telegram group: https://t.me/dolce_italia_orders
  
