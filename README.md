@@ -1,4 +1,10 @@
-﻿```frontend
+Deployed domain: https://dolce-italia.vercel.app/
+
+Telegram group: t.me/dolce_italia_orders
+ 
+ 
+ 
+ ```frontend
 npm install
 npm run dev
 
