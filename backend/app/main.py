@@ -18,14 +18,7 @@ OTP_TTL_MINUTES = 5
 OTP_STORE = {}
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
-ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-]
+ALLOWED_ORIGINS = ["*"]
 
 app = FastAPI(
     title="Dolce Italia API",
