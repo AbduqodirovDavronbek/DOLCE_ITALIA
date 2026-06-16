@@ -1,6 +1,6 @@
 Deployed domain: https://dolce-italia.vercel.app/
 
-Telegram group: t.me/dolce_italia_orders
+Telegram group: https://t.me/dolce_italia_orders
  
  
  
