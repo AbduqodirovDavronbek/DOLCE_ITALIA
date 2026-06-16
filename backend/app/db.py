@@ -10,11 +10,14 @@ if not DATABASE_URL:
     db_user = os.getenv("DB_USER")
     db_password = os.getenv("DB_PASSWORD")
     db_host = os.getenv("DB_HOST")
+    db_port = os.getenv("DB_PORT")
     db_name = os.getenv("DB_NAME")
     if not all([db_user, db_password, db_host, db_name]):
         raise RuntimeError(
             "Missing database configuration. Set DATABASE_URL or DB_USER/DB_PASSWORD/DB_HOST/DB_NAME."
         )
+    if db_port:
+        db_host = f"{db_host}:{db_port}"
     DATABASE_URL = f"mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}"
 
 engine = create_engine(
