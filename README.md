@@ -10,7 +10,6 @@ Telegram group: https://t.me/dolce_italia_orders
 npm install
 npm run dev
 
-http://localhost:5173
 ```
 
 ```backend
@@ -25,5 +24,4 @@ python init_db.py
 
 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
-http://localhost:8000/docs
 ```
